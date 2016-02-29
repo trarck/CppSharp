@@ -54,7 +54,7 @@ function get_toolset_configuration_name()
       if     ver == "19" then return "vs2015"
       elseif ver == "18" then return "vs2013"
       elseif ver == "17" then return "vs2012"
-      else error("Unknown MSVC compiler version, run in VS command prompt.") end
+      else return "vs2015" end
     end
 
     local vsver = _ACTION
