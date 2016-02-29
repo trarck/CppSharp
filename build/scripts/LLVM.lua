@@ -236,9 +236,9 @@ function build_llvm(llvm_build)
 	os.mkdir(llvm_build)
 
 	local conf = get_llvm_configuration_name()
-	local use_msbuild = false
+	local use_msbuild = true
 	if os.is("windows") and use_msbuild then
-		cmake("Visual Studio 14 2015", conf, llvm_build)
+		cmake("Visual Studio 14 2015", conf, llvm_build,"")
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
@@ -251,7 +251,7 @@ function build_llvm(llvm_build)
 end
 
 function package_llvm(conf, llvm, llvm_build)
-	local rev = git.rev_parse(llvm, "HEAD")
+	local rev = ""--git.rev_parse(llvm, "HEAD")
 	if string.is_empty(rev) then
 		rev = get_llvm_rev()
 	end
@@ -265,9 +265,8 @@ function package_llvm(conf, llvm, llvm_build)
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
 	local llvm_msbuild_libdir = "/" .. conf .. "/lib"
-	local lib_dir =  os.is("windows") and os.isdir(llvm_msbuild_libdir)
-		and llvm_msbuild_libdir or "/lib"
-	local llvm_build_libdir = llvm_build .. lib_dir
+	local lib_dir = "/lib"
+	local llvm_build_libdir =  llvm_build .. (os.is("windows") and llvm_msbuild_libdir or lib_dir)
 
 	if os.is("windows") and os.isdir(llvm_build_libdir) then
 		os.copydir(llvm_build_libdir, out .. "/build" .. lib_dir, "*.lib")

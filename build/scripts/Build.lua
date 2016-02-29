@@ -2,8 +2,8 @@ require "Utils"
 
 function get_msbuild_path()
 	local msbuild = '%SystemRoot%\\system32\\reg.exe query "HKLM\\SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\4.0" /v MSBuildToolsPath'
-	local val = execute(msbuild)
-
+	local val = execute(msbuild,true)
+    print(val)
 	for i in string.gmatch(val, "%S+") do
 		if os.isdir(i) then
 			return i

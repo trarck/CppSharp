@@ -26,7 +26,7 @@ function execute(cmd, quiet)
     file:close()
     -- FIXME: Lua 5.2 returns the process exit code from close()
     -- Update this once Premake upgrades from Lua 5.1
-    return 0
+    return output
   end
 end
 
